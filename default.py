@@ -9,8 +9,8 @@ if sys.version_info >= (2, 7):
     import json
     from collections import OrderedDict
 else:
-    from resources.ordereddict.ordereddict import OrderedDict
     import simplejson as json
+    from resources.ordereddict.ordereddict import OrderedDict
 
 __addon__        = xbmcaddon.Addon()
 __addonname__    = __addon__.getAddonInfo('id')
@@ -64,6 +64,8 @@ def path_leaf(path):
     return {"path":path, "filename":filename}
 
 def writeFile( data, filename ):
+    if type(data).__name__=='unicode':
+        data = data.encode('utf-8')
     try:
         thefile = open( filename, 'wb' )
         thefile.write( data )
@@ -73,7 +75,7 @@ def writeFile( data, filename ):
         log( e )
         return False
     except Exception, e:
-        log( 'unknown error while writing data to ' + filename, url )
+        log( 'unknown error while writing data to ' + filename )
         log( e )
         return False
     return True
