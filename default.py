@@ -197,7 +197,7 @@ class Main:
             return
         for folder in folders:
             try:
-                artist_name = hashmap[folder].decode('utf-8')
+                artist_name = hashmap[folder]
             except KeyError:
                 log( 'no matching artist folder for: ' + folder )
                 artist_name = ''
