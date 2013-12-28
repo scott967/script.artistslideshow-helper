@@ -9,7 +9,7 @@ if sys.version_info >= (2, 7):
     import json
     from collections import OrderedDict
 else:
-    from resources.ordereddict.OrderedDict import OrderedDict
+    from resources.ordereddict.ordereddict import OrderedDict
     import simplejson as json
 
 __addon__        = xbmcaddon.Addon()
