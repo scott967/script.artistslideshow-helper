@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <settings>
-    <setting id="hashlist" type="bool" label="32001" default="true" />
+    <setting id="hashlist" type="bool" label="32001" default="false" />
     <setting id="hashlist_path" type="folder" label="32002" default="" enable="eq(-1,true)" />
     <setting id="migrate" type="bool" label="32003" default="false" />
     <setting id="migrate_path" type="folder" label="32004" default="" enable="eq(-1,true)" />
