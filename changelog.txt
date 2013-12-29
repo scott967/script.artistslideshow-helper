@@ -1,2 +1,6 @@
+v.0.2
+- AS Helper now ignores artists with slashes in their name
+- code refactoring
+
 v.0.1
-- initial version
+- initial private version
