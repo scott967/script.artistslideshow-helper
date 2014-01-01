@@ -4,16 +4,18 @@
 # *
 
 import xbmc, xbmcaddon, xbmcvfs
-import os, sys, unicodedata
-from resources.common.fix_utf8 import smartUTF8
-from resources.common.xlogger import Logger
-from resources.common.fileops import checkDir, getCacheThumbName, writeFile
+import os, sys
 if sys.version_info >= (2, 7):
     import json
     from collections import OrderedDict
 else:
     import simplejson as json
     from resources.common.ordereddict import OrderedDict
+
+from resources.common.fix_utf8 import smartUTF8
+from resources.common.xlogger import Logger
+from resources.common.fileops import checkDir, writeFile
+from resources.common.transforms import itemHash
 
 __addon__        = xbmcaddon.Addon()
 __addonname__    = __addon__.getAddonInfo('id')
@@ -49,14 +51,40 @@ class Main:
             xbmc.executebuiltin(command)
 
 
-    def _init_vars( self ):
-        self.HASHLIST = ''
-        self.HASHLISTFOLDER = ''
-        self.HASHLISTFILE = ''
-        self.MIGRATE = ''
-        self.MIGRATETYPE = ''
-        self.MIGRATEFOLDER = ''
-        self.ASCACHEFOLDER = xbmc.translatePath( 'special://profile/addon_data/script.artistslideshow/ArtistSlideshow' ).decode('utf-8')
+    def _generate_hashlist( self ):
+        hashmap = self._get_artists_hashmap()
+        hashmap_str = ''
+        for key, value in hashmap.iteritems():
+           hashmap_str = hashmap_str + value + '\t' + key + '\n'
+        success, log_line = writeFile( hashmap_str, self.HASHLISTFILE )
+        if success:
+            message = __language__(30311)
+            lw.log( log_line, xbmc.LOGDEBUG )
+        else:
+            message = __language__(30312)
+            lw.log( 'unable to write has list file out to disk', xbmc.LOGDEBUG )
+        command = 'XBMC.Notification(%s, %s, %s, %s)' % (smartUTF8(__language__(30310)), smartUTF8(message), 5000, smartUTF8(__addonicon__))
+        xbmc.executebuiltin(command)
+
+
+    def _get_artists_hashmap( self ):
+        #gets a list of all the artists from XBMC
+        hashmap = OrderedDict()
+        response = xbmc.executeJSONRPC ( '{"jsonrpc":"2.0", "method":"AudioLibrary.GetArtists", "params":{"albumartistsonly":false, "sort":{"order":"ascending", "ignorearticle":true, "method":"artist"}},"id": 1}}' )
+        try:
+            artists_info = json.loads(response)['result']['artists']
+        except (IndexError, KeyError, ValueError):
+            artists_info = []
+        except Exception, e:
+            lw.log( 'unexpected error getting JSON back from XBMC', xbmc.LOGDEBUG )
+            lw.log( e, xbmc.LOGDEBUG )
+            artists_info = []
+        if artists_info:
+            for artist_info in artists_info:
+            	artist_hash = itemHash( artist_info['artist'] )
+                hashmap[artist_hash] = artist_info['artist']
+            hashmap[itemHash( "Various Artists" )] = "Various Artists" 
+        return hashmap
 
 
     def _get_settings( self ):
@@ -83,28 +111,22 @@ class Main:
                 lw.log( 'no migration folder set', xbmc.LOGDEBUG )
             
 
+    def _init_vars( self ):
+        self.HASHLIST = ''
+        self.HASHLISTFOLDER = ''
+        self.HASHLISTFILE = ''
+        self.MIGRATE = ''
+        self.MIGRATETYPE = ''
+        self.MIGRATEFOLDER = ''
+        self.ASCACHEFOLDER = xbmc.translatePath( 'special://profile/addon_data/script.artistslideshow/ArtistSlideshow' ).decode('utf-8')
+
+
     def _make_dirs( self ):
         checkDir( xbmc.translatePath('special://profile/addon_data/%s' % __addonname__ ).decode('utf-8') )
         if self.HASHLISTFOLDER:
             checkDir( self.HASHLISTFOLDER )
         if self.MIGRATEFOLDER:
             checkDir( self.MIGRATEFOLDER )
-
-
-    def _generate_hashlist( self ):
-        hashmap = self._get_artists_hashmap()
-        hashmap_str = ''
-        for key, value in hashmap.iteritems():
-           hashmap_str = hashmap_str + value + '\t' + key + '\n'
-        success, log_line = writeFile( hashmap_str, self.HASHLISTFILE )
-        if success:
-            message = __language__(30311)
-            lw.log( log_line, xbmc.LOGDEBUG )
-        else:
-            message = __language__(30312)
-            lw.log( 'unable to write has list file out to disk', xbmc.LOGDEBUG )
-        command = 'XBMC.Notification(%s, %s, %s, %s)' % (smartUTF8(__language__(30310)), smartUTF8(message), 5000, smartUTF8(__addonicon__))
-        xbmc.executebuiltin(command)
 
 
     def _migrate( self ):
@@ -164,30 +186,6 @@ class Main:
             lw.log( logline, xbmc.LOGDEBUG )
         command = 'XBMC.Notification(%s, %s, %s, %s)' % (smartUTF8(__language__(30330)), smartUTF8(__language__(30331)), 5000, smartUTF8(__addonicon__))
         xbmc.executebuiltin(command)
-
-
-    def _hash_artist(self, theartist):
-        return xbmc.getCacheThumbName(theartist).replace('.tbn', '')
-
-
-    def _get_artists_hashmap( self ):
-        #gets a list of all the artists from XBMC
-        hashmap = OrderedDict()
-        response = xbmc.executeJSONRPC ( '{"jsonrpc":"2.0", "method":"AudioLibrary.GetArtists", "params":{"albumartistsonly":false, "sort":{"order":"ascending", "ignorearticle":true, "method":"artist"}},"id": 1}}' )
-        try:
-            artists_info = json.loads(response)['result']['artists']
-        except (IndexError, KeyError, ValueError):
-            artists_info = []
-        except Exception, e:
-            lw.log( 'unexpected error getting JSON back from XBMC', xbmc.LOGDEBUG )
-            lw.log( e, xbmc.LOGDEBUG )
-            artists_info = []
-        if artists_info:
-            for artist_info in artists_info:
-            	artist_hash = self._hash_artist( artist_info['artist'] )
-                hashmap[artist_hash] = artist_info['artist']
-            hashmap[self._hash_artist( "Various Artists" )] = "Various Artists" 
-        return hashmap
 
 
 if ( __name__ == "__main__" ):
