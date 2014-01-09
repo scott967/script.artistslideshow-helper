@@ -8,7 +8,7 @@
 		<provides>executable</provides>
 	</extension>
 	<extension point="xbmc.addon.metadata">
-		<website></website>
+		<website>http://wiki.xbmc.org/index.php?title=Add-on:Artist_Slideshow-Helper</website>
 		<forum>http://forum.xbmc.org/showthread.php?tid=181454</forum>
 		<source>https://github.com/pkscout/script.artistslideshow-helper</source>
 		<license>GNU GENERAL PUBLIC LICENSE. Version 2, June 1991</license>
