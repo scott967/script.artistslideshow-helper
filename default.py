@@ -6,11 +6,11 @@
 import xbmc, xbmcaddon, xbmcvfs
 import os, sys
 if sys.version_info >= (2, 7):
-    import json
-    from collections import OrderedDict
+    import _json
+    from collections import OrderedDict as _ordereddict
 else:
-    import simplejson as json
-    from resources.common.ordereddict import OrderedDict
+    import simplejson as _json
+    from resources.common.ordereddict import OrderedDict as _ordereddict
 
 from resources.common.fix_utf8 import smartUTF8
 from resources.common.xlogger import Logger
@@ -69,10 +69,10 @@ class Main:
 
     def _get_artists_hashmap( self ):
         #gets a list of all the artists from XBMC
-        hashmap = OrderedDict()
+        hashmap = _ordereddict()
         response = xbmc.executeJSONRPC ( '{"jsonrpc":"2.0", "method":"AudioLibrary.GetArtists", "params":{"albumartistsonly":false, "sort":{"order":"ascending", "ignorearticle":true, "method":"artist"}},"id": 1}}' )
         try:
-            artists_info = json.loads(response)['result']['artists']
+            artists_info = _json.loads(response)['result']['artists']
         except (IndexError, KeyError, ValueError):
             artists_info = []
         except Exception, e:
