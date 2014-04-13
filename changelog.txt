@@ -1,3 +1,6 @@
+v.0.3.2.2
+- added additional logging when checking and creating directories
+
 v.0.3.2.1
 - support for remote file systems
 
