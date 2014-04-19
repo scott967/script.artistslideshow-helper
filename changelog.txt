@@ -1,8 +1,5 @@
-v.0.3.2.2
-- added additional logging when checking and creating directories
-
-v.0.3.2.1
-- support for remote file systems
+v.0.3.3
+- added support for remote file systems without mapping drive in OS
 
 v.0.3.2
 - fix for incorrect import of json module when python version >= 2.7
