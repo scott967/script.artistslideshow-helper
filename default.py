@@ -14,7 +14,7 @@ else:
 
 from resources.common.fix_utf8 import smartUTF8
 from resources.common.xlogger import Logger
-from resources.common.fileops import checkDir, writeFile
+from resources.common.fileops import checkPath, writeFile
 from resources.common.transforms import itemHash
 
 __addon__        = xbmcaddon.Addon()
@@ -121,13 +121,13 @@ class Main:
 
 
     def _make_dirs( self ):
-        exists, loglines = checkDir( xbmc.translatePath('special://profile/addon_data/%s' % __addonname__ ).decode('utf-8') )
+        exists, loglines = checkPath( xbmc.translatePath('special://profile/addon_data/%s' % __addonname__ ).decode('utf-8') )
         lw.log( loglines )
         if self.HASHLISTFOLDER:
-            exists, loglines = checkDir( self.HASHLISTFOLDER )
+            exists, loglines = checkPath( self.HASHLISTFOLDER )
             lw.log( loglines )
         if self.MIGRATEFOLDER:
-            exists, loglines = checkDir( self.MIGRATEFOLDER )
+            exists, loglines = checkPath( self.MIGRATEFOLDER )
             lw.log( loglines )
 
 
@@ -157,7 +157,7 @@ class Main:
                 old_folder = os.path.join( self.ASCACHEFOLDER, folder )
                 new_folder = os.path.join( self.MIGRATEFOLDER, artist_name, 'extrafanart' )
                 if self.MIGRATETYPE == 'copy' or self.MIGRATETYPE == 'move':
-                    exists, loglines = checkDir( new_folder )
+                    exists, loglines = checkPath( new_folder )
                     lw.log( loglines )
                 try:
                     os.chdir( old_folder )
