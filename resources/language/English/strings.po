@@ -116,7 +116,7 @@ msgid "copy"
 msgstr ""
 
 msgctxt "#32209"
-msgid "Suppress all logging"
+msgid "Enable debug logging"
 msgstr ""
 
 

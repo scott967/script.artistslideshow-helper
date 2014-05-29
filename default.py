@@ -24,9 +24,9 @@ __addonpath__    = __addon__.getAddonInfo('path').decode('utf-8')
 __addonicon__    = xbmc.translatePath('%s/icon.png' % __addonpath__ )
 __language__     = __addon__.getLocalizedString
 __preamble__     = '[Artist Slideshow Helper]'
-__suppress__     = __addon__.getSetting( "suppress" ) 
+__logging__     = __addon__.getSetting( "logging" ) 
 
-lw = Logger( preamble=__preamble__, suppress=__suppress__ )
+lw = Logger( preamble=__preamble__, logging=__logging__ )
 
 
 class Main:
@@ -190,6 +190,6 @@ class Main:
 
 if ( __name__ == "__main__" ):
     xbmc.log( '%s script version %s started' % (__preamble__, __addonversion__), xbmc.LOGNOTICE )
-    xbmc.log( '%s log suppression set to %s' % (__preamble__, __suppress__), xbmc.LOGNOTICE )
+    xbmc.log( '%s logging set to %s' % (__preamble__, __logging__), xbmc.LOGNOTICE )
     Main()
 xbmc.log( '%s script stopped' % __preamble__, xbmc.LOGNOTICE )
