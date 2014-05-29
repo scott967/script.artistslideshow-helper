@@ -114,3 +114,9 @@ msgstr ""
 msgctxt "#32008"
 msgid "copy"
 msgstr ""
+
+msgctxt "#32209"
+msgid "Suppress all logging"
+msgstr ""
+
+

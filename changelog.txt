@@ -1,3 +1,6 @@
+v0.3.3.2
+- added option to suppress all logging
+
 v.0.3.3.1
 - updates for new common libs
 

@@ -23,9 +23,10 @@ __addonversion__ = __addon__.getAddonInfo('version')
 __addonpath__    = __addon__.getAddonInfo('path').decode('utf-8')
 __addonicon__    = xbmc.translatePath('%s/icon.png' % __addonpath__ )
 __language__     = __addon__.getLocalizedString
+__preamble__     = '[Artist Slideshow Helper]'
+__suppress__     = __addon__.getSetting( "suppress" ) 
 
-#this initiates the logger object, which helps log arbitrary data to the log file
-lw = Logger( '[Artist Slideshow Helper]' )
+lw = Logger( preamble=__preamble__, suppress=__suppress__ )
 
 
 class Main:
@@ -188,7 +189,7 @@ class Main:
 
 
 if ( __name__ == "__main__" ):
-    lw.log( ['script version %s started' % __addonversion__] )
-    slideshow = Main()
-
-lw.log( ['script stopped'] )
+    xbmc.log( '%s script version %s started' % (__preamble__, __addonversion__), xbmc.LOGNOTICE )
+    xbmc.log( '%s log suppression set to %s' % (__preamble__, __suppress__), xbmc.LOGNOTICE )
+    Main()
+xbmc.log( '%s script stopped' % __preamble__, xbmc.LOGNOTICE )
