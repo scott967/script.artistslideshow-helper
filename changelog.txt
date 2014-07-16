@@ -1,3 +1,8 @@
+v.0.3.6~beta2
+- replaced os.listdir with xbmcvfs.listdir calls to fully support smb
+- fix for moving files from local file system to remote file system
+- added background progress dialog for artwork migration status
+
 v.0.3.6~beta1
 - fix for crash when using smb file paths
 
