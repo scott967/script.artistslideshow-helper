@@ -88,7 +88,7 @@ class Main:
                 pDialog.update(int(100*(count/total)), smartUTF8( __language__(32001) ), smartUTF8( artist_info['artist'] ) )
                 count += 1
             hashmap[itemHash( "Various Artists" )] = "Various Artists" 
-            pDialog.close()
+        pDialog.close()
         return hashmap
 
 
@@ -163,7 +163,7 @@ class Main:
                 lw.log( ['unexpected error while finding matching artist for ' + folder, e] )
                 artist_name = ''
             if artist_name and not (artist_name.find('/') != -1):
-                pDialog.update(100*(count/total), smartUTF8( __language__(32003) ), smartUTF8( artist_name ) )
+                pDialog.update(int(100*(count/total)), smartUTF8( __language__(32003) ), smartUTF8( artist_name ) )
                 old_folder = os.path.join( self.ASCACHEFOLDER, folder )
                 new_folder = os.path.join( self.MIGRATEFOLDER, artist_name, 'extrafanart' )
                 if self.MIGRATETYPE == 'copy' or self.MIGRATETYPE == 'move':
@@ -194,6 +194,7 @@ class Main:
         if self.MIGRATETYPE == 'test':
             success, loglines = writeFile( test_str, os.path.join( self.MIGRATEFOLDER, '_migrationtest.txt' ) )
             lw.log( loglines )
+        pDialog.close()
 
 
 if ( __name__ == "__main__" ):
