@@ -83,7 +83,7 @@ class Main:
             total = len( artists_info )
             count = 1
             for artist_info in artists_info:
-                lw.log( ["getting hash for artist %s" % artist_info['artist'] )
+                lw.log( ["getting hash for artist %s" % artist_info['artist']] )
             	artist_hash = itemHash( artist_info['artist'] )
                 hashmap[artist_hash] = artist_info['artist']
                 pDialog.update(int(100*(count/total)), smartUTF8( __language__(32001) ), smartUTF8( artist_info['artist'] ) )

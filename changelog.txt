@@ -1,3 +1,6 @@
+v.0.4.3~beta1
+- additional debug logging
+
 v.0.4.2
 - updated for Helix
 
