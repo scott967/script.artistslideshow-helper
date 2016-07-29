@@ -181,13 +181,9 @@ class Main:
             if artist_start:
                 pDialog.update(int(100*(count/total)), smartUTF8( language(32003) ), smartUTF8( artist_start ) )
                 if self.ENABLEFUZZYSEARCH == 'true':
-                    if artist_start[-1] == '.':
-                        trunc_name = artist_start[:-1] + self.ENDREPLACE
-                    else:
-                        trunc_name = artist_start
                     artist_name = ''
                     lw.log( ['the illegal characters are ', self.ILLEGALCHARS, 'the replacement is ' + self.ILLEGALREPLACE] )
-                    for c in list( trunc_name ):
+                    for c in list( self._remove_trailing_dot( artist_start ) ):
                         if c in self.ILLEGALCHARS:
                             artist_name = artist_name + self.ILLEGALREPLACE
                         else:
@@ -226,6 +222,13 @@ class Main:
             success, loglines = writeFile( test_str, os.path.join( self.MIGRATEFOLDER, '_migrationtest.txt' ) )
             lw.log( loglines )
         pDialog.close()
+
+
+    def _remove_trailing_dot( self, thename ):
+        if thename[-1] == '.' and len( thename ) > 1:
+            return self._remove_trailing_dot( thename[:-1] + self.ENDREPLACE )
+        else:
+            return thename
 
 
 if ( __name__ == "__main__" ):
