@@ -1,4 +1,4 @@
-v.0.4.4~beta1
+v.0.4.4
 - fix for crash when image migration is disabled
 
 v.0.4.3
