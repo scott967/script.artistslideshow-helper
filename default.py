@@ -62,7 +62,7 @@ class Main:
             lw.log( log_line )
             message = smartUTF8( language(30311) )
         else:
-            lw.log( ['unable to write has list file out to disk'] )
+            lw.log( ['unable to write hash list file out to disk'] )
             message = smartUTF8( language(30312) )
 
 
